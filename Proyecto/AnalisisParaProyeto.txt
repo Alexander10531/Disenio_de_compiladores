@@ -1,0 +1,32 @@
+Analizador lexico
+1. Lectura del archivo .txt
+	1.1 Recordar que el caracter de salida $ indica que el programa en ejecucion a llegado a su fin. 
+		1. Tener en consideracion las siguientes funciones del analizador lexico
+		2. El analizador léxico también realiza otras funciones de gran importancia:
+		3. Eliminar los comentarios del programa.
+		4. Eliminar espacios en blanco, tabuladores, retorno de carro, etc, y en general, todo aquello que carezca de significado según la sintaxis 
+		del lenguaje.
+		5. Reconocer los identificadores de usuario, números, palabras reservadas del lenguaje, etc., y tratarlos correctamente con respecto a la tabla de 
+		símbolos (solo en los casos en que este analizador deba tratar con dicha estructura).
+		6. Llevar la cuenta del número de línea por la que va leyendo, por si se produce algún error, dar información acerca de dónde se ha producido.
+		7. Avisar de errores léxicos. Por ejemplo, si el carácter ‘@’ no pertenece al lenguaje, se debe emitir un error.
+2. Deteccion del lexema correspondiente a una expresion regular. 
+3. Definir los tokens que se utilizaran. 
+¿Vamos a usar literales?
+
+1. Lectura de archivo txt
+2. Realizar la lectura de cada una de las lineas con expresiones regulares para saber si estas corresponden a una de las expresiones 
+regulares definidas, los valores que se recolectaran a partir de cada una de las lecturas realizadas, los valores a recolectar en esta parte 
+son: 
+    2.1 Linea del token: El numero de linea en el que se encuentra.
+    2.2 Tipo de token: Este valor se obtiene del emparejamiento que resulta del emparejamiento con una de las expresiones regulares. 
+    2.3 Valor o elemento de la operacion. 
+    2.4 Otros. 
+
+Aspectos a considerar: 
+    ERRORES: 
+        1: Sintaxis incorrecta: El codigo a arrojar cuando una de las lineas leidas no entre dentro de las expresiones regulares solicitadas. 
+        2. Expresiones matematicas erroreas: Como Divisiones entre 0. 
+
+Analizador Lexico
+    1. 
