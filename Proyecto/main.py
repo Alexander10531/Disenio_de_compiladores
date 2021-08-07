@@ -3,7 +3,8 @@ from syntancticAnalyzer import *
 
 def fileReader(fileTxt):
     fileR = open(fileTxt, "r")
-    lines = fileR.read().split('\n')    
+    return fileR.read()
 
-
-fileReader("file.txt") 
+lexicalAnalyzer = LexicalAnalyzer(fileReader("file.txt"))
+print(lexicalAnalyzer.getlinebyline())
+# lexicalAnalyzer.createSTable()
