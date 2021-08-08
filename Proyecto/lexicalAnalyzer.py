@@ -4,14 +4,13 @@ class LexicalAnalyzer:
 
     def __init__(self, sourceCode):
         self.sourceCode = sourceCode
-        self.linebyline = self.sourceCode.split('\n')
         self.symbolTable = []
 
     def getSourceCode(self):
         return self.sourceCode
 
-    def getlinebyline(self):
-        return self.linebyline
+    def getSymbolTable(self):
+        return self.symbolTable
 
     def createSTable(self):
         sourceCode1 = sub(r'\n+', ' ', self.sourceCode)
@@ -26,5 +25,5 @@ class LexicalAnalyzer:
                 sourceCode1 = self.assignEntry2SymbolTable(match(r'(\"[^\"]*\"|\d+)\s*', sourceCode1), sourceCode1, 400)
 
     def assignEntry2SymbolTable(self, lexeme, sourceCode, code):
-        self.symbolTable.append((lexeme.group(), code))
+        self.symbolTable.append((lexeme.group().strip(), code))
         return sourceCode[lexeme.end():]

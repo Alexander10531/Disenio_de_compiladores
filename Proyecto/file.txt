@@ -6,3 +6,5 @@ show(5+3)
 show(repat(palabra,3))
 str C="con esta clase" 
 A>B>C  
+
+
