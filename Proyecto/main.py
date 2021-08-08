@@ -6,5 +6,4 @@ def fileReader(fileTxt):
     return fileR.read()
 
 lexicalAnalyzer = LexicalAnalyzer(fileReader("file.txt"))
-print(lexicalAnalyzer.getlinebyline())
-# lexicalAnalyzer.createSTable()
+lexicalAnalyzer.createSTable()

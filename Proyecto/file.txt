@@ -1,9 +1,8 @@
-int A=2
-str B="feliz"   
+int var=2  
+int var1="feliz"   
 52+2
-
 repeat(palabra,3)
 show(5+3)
 show(2*casa)
 C=con esta clase 
-A>B>C
+A>B>C  
