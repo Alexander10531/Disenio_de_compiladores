@@ -14,32 +14,17 @@ class LexicalAnalyzer:
         return self.linebyline
 
     def createSTable(self):
-        sourceCode1 = sub(r'\n\s+|^\s+\n', '\n', self.sourceCode)
-        sourceCode1 = sub(r'^\s+', '', sourceCode1)
-        while True:
-            if match(r'int\s*|str\s*', sourceCode1) != None: 
-                sourceCode1 = self.reservedWord(match(r'int\s*|str\s*', sourceCode1), sourceCode1)
-            elif match(r'[a-zA-Z]\w{0,14}', sourceCode1) != None:
-                sourceCode1 = self.identifierWord(match(r'[a-zA-Z]\w{0,14}', sourceCode1), sourceCode1)
-            elif match(r'=|>|\+|-|/|\"', sourceCode1) != None:
-                sourceCode1 = self.identifierWord(match(r'=|>|\+|-|/', sourceCode1), sourceCode1)
-            elif match(r'\"[^\"]*\"|\d', sourceCode1) != None: 
-                sourceCode1 = self.values(match(r'\"[^\"]*\"|\d', sourceCode1), sourceCode1)
-                print(sourceCode1)
-                break
-    
-    def reservedWord(self, lexeme, sourceCode):
-        self.symbolTable.append((lexeme.group(), 100))
-        return sourceCode[lexeme.end():]
-        
-    def identifierWord(self, lexeme, sourceCode):
-        self.symbolTable.append((lexeme.group(), 200))
-        return sourceCode[lexeme.end():]
-    
-    def operators(self, lexeme, sourceCode):
-        self.symbolTable.append((lexeme.group(), 300))
-        return sourceCode[lexeme.end():]
+        sourceCode1 = sub(r'\n+', ' ', self.sourceCode)
+        while len(sourceCode1) != 0:
+            if match(r'(int|str|repeat|show)\s*', sourceCode1) != None: 
+                sourceCode1 = self.assignEntry2SymbolTable(match(r'(int|str|repeat|show)\s*', sourceCode1), sourceCode1, 100)
+            elif match(r'[a-zA-Z]\w{0,14}\s*', sourceCode1) != None:
+                sourceCode1 = self.assignEntry2SymbolTable(match(r'[a-zA-Z]\w{0,14}\s*', sourceCode1), sourceCode1, 200)
+            elif match(r'(\(|\)|=|>|\+|-|/|,)\s*', sourceCode1) != None:
+                sourceCode1 = self.assignEntry2SymbolTable(match(r'(\(|\)|=|>|\+|-|/|,)\s*', sourceCode1), sourceCode1, 300)
+            elif match(r'(\"[^\"]*\"|\d)\s*', sourceCode1) != None: 
+                sourceCode1 = self.assignEntry2SymbolTable(match(r'(\"[^\"]*\"|\d+)\s*', sourceCode1), sourceCode1, 400)
 
-    def values(self, lexeme, sourceCode):
-        self.symbolTable.append((lexeme.group, 400))
+    def assignEntry2SymbolTable(self, lexeme, sourceCode, code):
+        self.symbolTable.append((lexeme.group(), code))
         return sourceCode[lexeme.end():]

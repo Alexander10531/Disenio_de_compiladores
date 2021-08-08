@@ -7,3 +7,4 @@ def fileReader(fileTxt):
 
 lexicalAnalyzer = LexicalAnalyzer(fileReader("file.txt"))
 lexicalAnalyzer.createSTable()
+print(lexicalAnalyzer.symbolTable)
