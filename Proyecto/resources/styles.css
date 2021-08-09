@@ -1,0 +1,61 @@
+:root{
+    --main-color: #F3722C;
+}
+
+body{
+    margin: 0px;
+    padding: 0px;
+}
+
+main{
+    background-color: transparent;
+    height: calc(100vh - 57px);
+    position: relative;
+}
+
+.navbar-container{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    border-bottom-color: var(--main-color);
+}
+
+.logo-atom{
+    font-size: 35px;
+    color: var(--main-color);
+}
+
+.button-container{
+    width: 60px;
+    height: 30px;
+    display: flex;
+    cursor: pointer;
+    padding: 0px 2px;
+    position: relative;
+    border-radius: 30px;    
+    align-items: center;
+    box-sizing: border-box;
+    border: 1px solid var(--main-color);
+}
+
+.logo-container{
+    margin-right: auto;
+}
+
+.button{
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    left: 2px;
+    transition: left 1s;
+    border-radius: 50%;
+    background-color: var(--main-color);
+}
+
+.wave{
+    position: absolute;
+    bottom: 0px;
+}

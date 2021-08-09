@@ -1,0 +1,10 @@
+int var    =   2 
+int   var1 = "feliz"   
+52+2
+repeat(palabra,3)
+show(5+3)
+show(repat(palabra,3))
+str C="con esta clase" 
+A>B>C  
+
+
