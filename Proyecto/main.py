@@ -15,7 +15,9 @@ def showMeWhatUGot(data):
 \t<meta http-equiv="X-UA-Compatible" content="IE=edge">
 \t<meta name="viewport" content="width=device-width, initial-scale=1.0">
 \t<link rel="stylesheet" href="styles.css">
-\t<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/duotone.css" integrity="sha384-R3QzTxyukP03CMqKFe0ssp5wUvBPEyy9ZspCB+Y01fEjhMwcXixTyeot+S40+AjZ" crossorigin="anonymous"/>
+\t<link rel="preconnect" href="https://fonts.googleapis.com">
+\t<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+\t<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
 \t<script src="https://kit.fontawesome.com/26a131d264.js" crossorigin="anonymous"></script>
 \t<title>Document</title>
 </head>

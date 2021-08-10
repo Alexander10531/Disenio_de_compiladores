@@ -62,3 +62,14 @@ Tokens usados en el analizador lexico
     200: identificadores
     300: Operadores
     400: Valores
+
+Estructura y aspectos a considerar del anlizador sintactico
+
+1.) Sentencia de asignacion
+    <Palabra reservada int|str><identificador><=><valor | OperacionMatematica | funcion>
+        Aqui se tiene que tener en consideracion que el valor tiene que coincidir con el tipo de valor es decir
+        str si lo que se quiere almacenar es una cadena, int si lo que quiere almacenar es un entero. 
+2.) Sentencia de suma, resta y concatenacion 
+    <digitos|identificador><+ | - | '>'><digitos|identificador>
+3.) Sentecia de funcion
+    <palabraReservada><parentesis><value | identificador><,*>< value, identificador >

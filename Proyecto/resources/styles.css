@@ -6,6 +6,7 @@ body{
     margin: 0px;
     padding: 0px;
     overflow-y: hidden;
+    font-family: 'Roboto', sans-serif;
 }
 
 main{
@@ -70,7 +71,6 @@ main{
 .symbolTable{
     margin: 10px;
     text-align: left;
-    /* border: 1px solid black; */
     width: calc(100vw - 30px);
     border-collapse: collapse;
 }
