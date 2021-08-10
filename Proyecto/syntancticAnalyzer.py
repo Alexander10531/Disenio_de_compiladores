@@ -1,3 +1,5 @@
+from re import search
+#^(\w)+=(\"[^\"]*\"|\d+)
 class SyntacticAnalyzer:
     
     def __init__(self, symbolTable): 
@@ -6,14 +8,14 @@ class SyntacticAnalyzer:
         self.lexeme = []
         self.code = []
         self.extractInfo()
+        self.doIt()
 
     def extractInfo(self):
         for i in range(0, len(self.symbolTable)):
             if self.symbolTable[i][0] == "$":
                 self.finalInstruction.append(i)
-            else: 
-                self.lexeme.append(self.symbolTable[i][0])
-                self.code.append(self.symbolTable[i][1])
+            self.lexeme.append(self.symbolTable[i][0])
+            self.code.append(self.symbolTable[i][1])
 
     def getLexemes(self):
         return self.lexeme
@@ -27,7 +29,15 @@ class SyntacticAnalyzer:
     def getSymbolTable(self):
         return self.symbolTable
     
-    # def doIt(self):
-    #     for i in range(0, len(self.symbolTable)):
-    #         if self.symbolTable[i][1] == 400: 
-    #             pass
+    def doIt(self):
+        for i in range(0, len(self.symbolTable)):
+            if self.symbolTable[i][1] == 100:
+                if(search(r'^(\w)+=(\"[^\"]*\"|\d+)', "".join(self.lexeme[i+1:self.finalInstruction[0]]))) != None:
+                    # print(self.code[i+1:self.finalInstruction[0]])
+                    if(self.symbolTable[i][0]) == "str":
+                        if(self.lexeme[self.code[i+1:self.finalInstruction[0]].index(400)] ):
+                            pass
+                    elif(self.symbolTable[i][0]) == "int":
+                        pass
+                    del(self.finalInstruction[0])
+                    
