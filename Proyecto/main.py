@@ -67,3 +67,4 @@ def showMeWhatUGot(data):
 lexicalAnalyzer = LexicalAnalyzer(fileReader("file.txt"))
 lexicalAnalyzer.createSTable()
 showMeWhatUGot(lexicalAnalyzer.getSymbolTable())
+syntacticAnalyzer = SyntacticAnalyzer(lexicalAnalyzer.getSymbolTable())
