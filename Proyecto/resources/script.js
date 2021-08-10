@@ -12,13 +12,5 @@ containerMode.addEventListener('click', ()=>{
         butttonMode.style.left = '2px'
         positionB = !positionB;
         body.classList.toggle('darkMode')
-
     }
 })
-
-function loadTable(){
-    fetch('usuario.json')
-        .then((response)=>{
-            console.log(typeof(response))
-        })
-}

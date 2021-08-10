@@ -24,10 +24,7 @@ class LexicalAnalyzer:
                 sourceCode1 = self.assignEntry2SymbolTable(match(r'(\(|\)|=|>|\+|-|/|,)\s*', sourceCode1), sourceCode1, 300)
             elif match(r'(\"[^\"]*\"|\d)\s*', sourceCode1) != None: 
                 sourceCode1 = self.assignEntry2SymbolTable(match(r'(\"[^\"]*\"|\d+)\s*', sourceCode1), sourceCode1, 400)        
-        fileTable = open('resources/tableSymbol.json', 'w')
-        fileTable.write(dumps(self.symbolTable))
         del(sourceCode1)
-        fileTable.close()
 
 
     def assignEntry2SymbolTable(self, lexeme, sourceCode, code):
