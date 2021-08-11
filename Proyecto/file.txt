@@ -1,2 +1,2 @@
 int var1 = 2 
-str var2 = "Alexander"
+str var2 = 2

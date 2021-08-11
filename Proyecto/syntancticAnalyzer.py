@@ -32,12 +32,12 @@ class SyntacticAnalyzer:
     def doIt(self):
         for i in range(0, len(self.symbolTable)):
             if self.symbolTable[i][1] == 100:
-                if(search(r'^(\w)+=(\"[^\"]*\"|\d+)', "".join(self.lexeme[i+1:self.finalInstruction[0]]))) != None:
+                if(search(r"^(\w)+=('[^']*'|\d+)", "".join(self.lexeme[i+1:self.finalInstruction[0]]))) != None:
                     # print(self.code[i+1:self.finalInstruction[0]])
-                    if(self.symbolTable[i][0]) == "str":
-                        if(self.lexeme[self.code[i+1:self.finalInstruction[0]].index(400)] ):
-                            pass
-                    elif(self.symbolTable[i][0]) == "int":
-                        pass
+                    if(self.symbolTable[i][0]) == "str":        
+                        if(search(r"'[^']*'",self.lexeme[i + 1: self.finalInstruction[0]][self.code[i + 1 : self.finalInstruction[0]].index(400)]) != None):
+                            print("Aqui se va hacer todo el almacenamiento de las variables")
+                        else: 
+                            print("Aqui ha ocurrido un error :c")
                     del(self.finalInstruction[0])
                     
