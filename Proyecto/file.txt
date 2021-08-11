@@ -1,2 +1,2 @@
 str var1 = '2'
-int var2 = 2
+str var2 = var1

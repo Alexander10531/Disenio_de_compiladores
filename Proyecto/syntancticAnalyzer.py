@@ -46,30 +46,66 @@ class SyntacticAnalyzer:
         line = 0
         for i in range(0, len(self.symbolTable)):
             if self.symbolTable[i][1] == 100:
-                line, i = self.reserveMemory(i, line)
+                # self.changeValue(i, True)
+                line, i = self.reserveMemory(i, line)                
         self.output += "Codigo finalizado"
     
     def reserveMemory(self, i, line):
-        if(search(r"^(\w)+=('[^']*'|\d+)", "".join(self.lexeme[i+1:self.finalInstruction[0]]))) != None:
+        if(search(r"^(\w)+=('[^']*'|\d+|(\w)+)", "".join(self.lexeme[i+1:self.finalInstruction[0]]))) != None:
+            self.changeValue(i, True)
             if(self.symbolTable[i][0]) == "str":        
                 if(search(r"'[^']*'", self.obtainLexeme(i, 400)) != None):
-                    self.memoryStr[self.obtainLexeme(i, 200)] = self.obtainLexeme(i, 400)
+                    self.saveValue(self.obtainLexeme(i, 200), self.obtainLexeme(i, 400), "str")
                     line = line + 1
                 else: 
                     i = len(self.symbolTable)
-                    self.output += "Error:1\nError de tipado\nLine:" + str(line) + "\n"
+                    self.output += "Error:1\nError de tipado\nLine:"
             # ¿En esta parte se tiene que aclarar el tipo de la variable?
             else: 
                 if(search(r"\d+", self.obtainLexeme(i, 400)) != None):
-                    self.memoryInt[self.obtainLexeme(i, 200)] = int(self.obtainLexeme(i, 400))
+                    self.saveValue(self.obtainLexeme(i, 200), self.obtainLexeme(i, 400), "int")
                     line = line + 1
                 else: 
                     i = len(self.symbolTable)
-                    self.output += "Error:1\nError de tipado\nLine:" + str(line) + "\n"
+                    self.output += "Error:1\nError de tipado\nLine:"
         else:
-            self.output += "Error:2\nSintaxis erronea\nLine:" + str(line) + "\n"
+            self.output += "Error:2\nSintaxis erronea\nLine:"        
         del(self.finalInstruction[0])
         return line, i
 
     def obtainLexeme(self, i, code):
         return self.lexeme[i + 1: self.finalInstruction[0]][self.code[i + 1 : self.finalInstruction[0]].index(code)]
+
+    def saveValue(self, identifier, value, typeMemory):
+        if typeMemory == "str":
+            if identifier in self.memoryInt: 
+                del(self.memoryInt[identifier])
+                self.memoryStr[identifier] = value
+            else: 
+                self.memoryStr[identifier] = value
+        elif typeMemory == "int":
+            if identifier in self.memoryStr: 
+                del(self.memoryStr[identifier])
+                self.memoryInt[identifier] = value
+            else: 
+                self.memoryInt[identifier] = value
+
+    def changeValue(self, i, reserve):
+        start = 0     
+        if reserve: 
+            start = self.code[i : self.finalInstruction[0]].index(300)
+        for j in range(0, len(self.code[i : self.finalInstruction[0]])): 
+            if self.code[i : self.finalInstruction[0]][j] == 200: 
+                if j > start:
+                    if (self.lexeme[i : self.finalInstruction[0]][j] in self.memoryStr) == True:
+                        self.code[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)] = 400
+                        self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][1] = 400
+                        self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][0] = self.memoryStr[self.lexeme[i : self.finalInstruction[0]][j]]
+                        self.lexeme[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)] = self.memoryStr[self.lexeme[i : self.finalInstruction[0]][j]] 
+                        # print(self.lexeme[i : self.finalInstruction[0]][j]) 
+                        # print(self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][0])
+                        # self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][0] = self.memoryStr[self.lexeme[i : self.finalInstruction[0]][j]]
+                        # print(self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][0])
+                        print(self.code)
+                        print(self.lexeme)
+                        print(self.symbolTable)

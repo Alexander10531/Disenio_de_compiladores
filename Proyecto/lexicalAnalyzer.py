@@ -3,7 +3,7 @@ from re import match, search, sub
 class LexicalAnalyzer: 
 
     def __init__(self, sourceCode):
-        self.sourceCode = sourceCode
+        self.sourceCode = sourceCode + "\n"
         self.symbolTable = []
         self.output = ""
 
@@ -29,7 +29,6 @@ class LexicalAnalyzer:
                 sourceCode1 = self.assignEntry2SymbolTable(match(r"('[^']*'|\d)\s*", sourceCode1), sourceCode1, 400)        
         del(sourceCode1)
 
-
     def assignEntry2SymbolTable(self, lexeme, sourceCode, code):
-        self.symbolTable.append((lexeme.group().strip(), code))
+        self.symbolTable.append([lexeme.group().strip(), code])
         return sourceCode[lexeme.end():]
