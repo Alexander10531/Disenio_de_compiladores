@@ -1,2 +1,2 @@
-str var1 = '2'
-str var2 = var1
+int numero1 = 3
+int numero = numero

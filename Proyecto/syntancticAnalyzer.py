@@ -1,5 +1,4 @@
-#^(\w)+=(\"[^\"]*\"|\d+)
-# print(self.code[i+1:self.finalInstruction[0]])
+from os import truncate
 from re import search
 class SyntacticAnalyzer:
     
@@ -52,24 +51,29 @@ class SyntacticAnalyzer:
     
     def reserveMemory(self, i, line):
         if(search(r"^(\w)+=('[^']*'|\d+|(\w)+)", "".join(self.lexeme[i+1:self.finalInstruction[0]]))) != None:
-            self.changeValue(i, True)
-            if(self.symbolTable[i][0]) == "str":        
-                if(search(r"'[^']*'", self.obtainLexeme(i, 400)) != None):
-                    self.saveValue(self.obtainLexeme(i, 200), self.obtainLexeme(i, 400), "str")
-                    line = line + 1
-                else: 
-                    i = len(self.symbolTable)
-                    self.output += "Error:1\nError de tipado\nLine:"
-            # ¿En esta parte se tiene que aclarar el tipo de la variable?
+            if(self.changeValue(i, True)):
+                if(self.symbolTable[i][0]) == "str":        
+                    if(search(r"'[^']*'", self.obtainLexeme(i, 400)) != None):
+                        self.saveValue(self.obtainLexeme(i, 200), self.obtainLexeme(i, 400), "str")
+                        line = line + 1
+                    else: 
+                        i = len(self.symbolTable)
+                        self.output += "Error:1\nError de tipado\nLine:"
+                # ¿En esta parte se tiene que aclarar el tipo de la variable?
+                else:
+                    if(search(r"\d+", self.obtainLexeme(i, 400)) != None):
+                        self.saveValue(self.obtainLexeme(i, 200), self.obtainLexeme(i, 400), "int")
+                        line = line + 1
+                    else: 
+                        i = len(self.symbolTable)
+                        self.output += "Error:1\nError de tipado\n:"
             else: 
-                if(search(r"\d+", self.obtainLexeme(i, 400)) != None):
-                    self.saveValue(self.obtainLexeme(i, 200), self.obtainLexeme(i, 400), "int")
-                    line = line + 1
-                else: 
-                    i = len(self.symbolTable)
-                    self.output += "Error:1\nError de tipado\nLine:"
+                i = len(self.symbolTable)
+                self.output += "Error:3\nReferencia a memoria no encontrada\n"    
         else:
-            self.output += "Error:2\nSintaxis erronea\nLine:"        
+            i = len(self.symbolTable)
+            self.output += "Error:2\nSintaxis erronea\n"        
+        
         del(self.finalInstruction[0])
         return line, i
 
@@ -102,10 +106,11 @@ class SyntacticAnalyzer:
                         self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][1] = 400
                         self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][0] = self.memoryStr[self.lexeme[i : self.finalInstruction[0]][j]]
                         self.lexeme[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)] = self.memoryStr[self.lexeme[i : self.finalInstruction[0]][j]] 
-                        # print(self.lexeme[i : self.finalInstruction[0]][j]) 
-                        # print(self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][0])
-                        # self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][0] = self.memoryStr[self.lexeme[i : self.finalInstruction[0]][j]]
-                        # print(self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][0])
-                        print(self.code)
-                        print(self.lexeme)
-                        print(self.symbolTable)
+                    elif (self.lexeme[i : self.finalInstruction[0]][j] in self.memoryInt) == True:
+                        self.code[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)] = 400
+                        self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][1] = 400
+                        self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][0] = self.memoryInt[self.lexeme[i : self.finalInstruction[0]][j]]
+                        self.lexeme[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)] = self.memoryInt[self.lexeme[i : self.finalInstruction[0]][j]] 
+                    else: 
+                        return False
+        return True
