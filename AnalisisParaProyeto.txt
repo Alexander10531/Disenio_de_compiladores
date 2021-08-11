@@ -73,3 +73,7 @@ Estructura y aspectos a considerar del anlizador sintactico
     <digitos|identificador><+ | - | '>'><digitos|identificador>
 3.) Sentecia de funcion
     <palabraReservada><parentesis><value | identificador><,*>< value, identificador >
+
+Errores a corregir
+1. Hay errores cuando solo se pone una linea debido a que el salto de linea se cambia por el simbolo $
+2. Hay algunos caracteres que rompen el programa como "."

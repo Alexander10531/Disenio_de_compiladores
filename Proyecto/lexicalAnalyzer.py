@@ -5,6 +5,10 @@ class LexicalAnalyzer:
     def __init__(self, sourceCode):
         self.sourceCode = sourceCode
         self.symbolTable = []
+        self.output = ""
+
+    def getOutput(self):
+        return self.output
 
     def getSourceCode(self):
         return self.sourceCode

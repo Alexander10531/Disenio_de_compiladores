@@ -1,14 +1,27 @@
-from re import search
 #^(\w)+=(\"[^\"]*\"|\d+)
+# print(self.code[i+1:self.finalInstruction[0]])
+from re import search
 class SyntacticAnalyzer:
     
     def __init__(self, symbolTable): 
         self.symbolTable = symbolTable
         self.finalInstruction = []
+        self.memoryInt = {}
+        self.memoryStr = {}
         self.lexeme = []
         self.code = []
+        self.output = ""
         self.extractInfo()
         self.doIt()
+
+    def getOutput(self):
+        return self.output
+    
+    def getStrMemory(self):
+        return self.memoryStr
+    
+    def getIntMemory(self):
+        return self.memoryInt
 
     def extractInfo(self):
         for i in range(0, len(self.symbolTable)):
@@ -30,14 +43,33 @@ class SyntacticAnalyzer:
         return self.symbolTable
     
     def doIt(self):
+        line = 0
         for i in range(0, len(self.symbolTable)):
             if self.symbolTable[i][1] == 100:
-                if(search(r"^(\w)+=('[^']*'|\d+)", "".join(self.lexeme[i+1:self.finalInstruction[0]]))) != None:
-                    # print(self.code[i+1:self.finalInstruction[0]])
-                    if(self.symbolTable[i][0]) == "str":        
-                        if(search(r"'[^']*'",self.lexeme[i + 1: self.finalInstruction[0]][self.code[i + 1 : self.finalInstruction[0]].index(400)]) != None):
-                            print("Aqui se va hacer todo el almacenamiento de las variables")
-                        else: 
-                            print("Aqui ha ocurrido un error :c")
-                    del(self.finalInstruction[0])
-                    
+                line, i = self.reserveMemory(i, line)
+        self.output += "Codigo finalizado"
+    
+    def reserveMemory(self, i, line):
+        if(search(r"^(\w)+=('[^']*'|\d+)", "".join(self.lexeme[i+1:self.finalInstruction[0]]))) != None:
+            if(self.symbolTable[i][0]) == "str":        
+                if(search(r"'[^']*'", self.obtainLexeme(i, 400)) != None):
+                    self.memoryStr[self.obtainLexeme(i, 200)] = self.obtainLexeme(i, 400)
+                    line = line + 1
+                else: 
+                    i = len(self.symbolTable)
+                    self.output += "Error:1\nError de tipado\nLine:" + str(line) + "\n"
+            # ¿En esta parte se tiene que aclarar el tipo de la variable?
+            else: 
+                if(search(r"\d+", self.obtainLexeme(i, 400)) != None):
+                    self.memoryInt[self.obtainLexeme(i, 200)] = int(self.obtainLexeme(i, 400))
+                    line = line + 1
+                else: 
+                    i = len(self.symbolTable)
+                    self.output += "Error:1\nError de tipado\nLine:" + str(line) + "\n"
+        else:
+            self.output += "Error:2\nSintaxis erronea\nLine:" + str(line) + "\n"
+        del(self.finalInstruction[0])
+        return line, i
+
+    def obtainLexeme(self, i, code):
+        return self.lexeme[i + 1: self.finalInstruction[0]][self.code[i + 1 : self.finalInstruction[0]].index(code)]
