@@ -63,6 +63,25 @@ Tokens usados en el analizador lexico
     300: Operadores
     400: Valores
 
+Estructura de archivo
+int var1 = 2
+int num1 = 2
+int var2 = var1
+str var3 = 'Alexander'
+str var4 = 'Ismael'
+str var5 = var4
+num1 + var1
+num1 + 2
+2 + num1
+1 + 1 
+1 - 1
+show(1 - 1)
+show(1 + 1)
+show(var1)
+show(concat(var3, var4))
+show(concat(var3, var4, var5))
+show(repeat(concat(str1,str2)))
+
 Estructura y aspectos a considerar del anlizador sintactico
 
 1.) Sentencia de asignacion
@@ -80,3 +99,6 @@ Errores a corregir
 3. Tomar en consideracion cuando los nombres de las variables son iguales no pueden estar en ambos diccionarios
 4. Tiene que corregirse el conteo de lineas (Lo hare desde el analizis lexicografico)
 5. En caso de realizar el conteo de las lineas se tiene que eliminar las variables line que estan 
+6. Hacer que las palabras reservadas no puedan ser usadas como identificador
+7. Cambiar la expresion regular en las asignaciones para que permita operaciones. 
+8. Existe la posibilidad de hacer que las operaciones sean entre varios elementos.

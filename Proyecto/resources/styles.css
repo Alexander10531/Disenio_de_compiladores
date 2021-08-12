@@ -5,8 +5,10 @@
 body{
     margin: 0px;
     padding: 0px;
+    color: white;
     overflow-y: hidden;
     font-family: 'Roboto', sans-serif;
+    background-color: rgba(00, 00, 00, .88);    
 }
 
 main{
@@ -64,8 +66,8 @@ main{
 }
 
 .darkMode{
-    color: white;
-    background-color: rgba(00, 00, 00, .88);
+    color: black;
+    background-color: white;
 }
 
 .symbolTable{
