@@ -1,10 +1,12 @@
-# Expresion regular para funcion contact: concat\(((\w+),)+\w\)
-from re import search
+from os import symlink
+from re import search, match
 from operator import add, sub
 class SyntacticAnalyzer:
     
     def __init__(self, symbolTable): 
+        self.functions = {"repeat": self.functionRepeat, "show" : self.functionShow, "concat": self.functionConcat}
         self.symbolTable = symbolTable
+        self.error = True
         self.finalInstruction = []
         self.memoryInt = {}
         self.memoryStr = {}
@@ -16,10 +18,10 @@ class SyntacticAnalyzer:
 
     def getOutput(self):
         return self.output
-    
+
     def getStrMemory(self):
         return self.memoryStr
-    
+
     def getIntMemory(self):
         return self.memoryInt
 
@@ -41,16 +43,17 @@ class SyntacticAnalyzer:
 
     def getSymbolTable(self):
         return self.symbolTable
-    
+
     def doIt(self):
         i = 0
-        while i < len(self.symbolTable): 
+        while i < len(self.symbolTable) and self.error: 
             if self.symbolTable[i][1] == 100:
                 i = self.reserveMemory(i)
             else: 
                 if(self.changeValue(i, False)):
                     if(self.changeOperation(i)):
-                        pass
+                        if(500 in self.code[i : self.finalInstruction[0]]):
+                            self.findFunction(i)
                     else: 
                         self.output += "Error:4\nError de sintaxis"
                         break
@@ -60,7 +63,7 @@ class SyntacticAnalyzer:
                 i = self.finalInstruction[0] + 1
                 del(self.finalInstruction[0])
         self.output += "El Codigo finalizo"
-        
+
     def reserveMemory(self, i):
         if(search(r"^(\w)+=('[^']*'|\d+|(\w)+)", "".join(self.lexeme[i+1:self.finalInstruction[0]]))) != None:
             if(self.changeValue(i, True)):
@@ -119,9 +122,19 @@ class SyntacticAnalyzer:
                         return False
         return True
 
-    def findFunction(self):
-        pass
-    
+    def findFunction(self, i):
+        lista = self.code[i : self.finalInstruction[0]]
+        lista1 = self.lexeme[i : self.finalInstruction[0]]
+        lista.reverse()
+        while True:
+            if 500 in self.code[i : self.finalInstruction[0]]:
+                start = (len(lista) - 1) - lista.index(500)
+                final = lista1.index(")")
+                self.functions[self.lexeme[i + start]](i, start, final)
+                break
+            else: 
+                break
+
     def changeOperation(self, j):
         if '+' in self.lexeme[j : self.finalInstruction[0]] or '-' in self.lexeme[j : self.finalInstruction[0]]:
             if search(r'\d+(\+|-)\d+', "".join(self.lexeme[j : self.finalInstruction[0]])) != None:
@@ -141,6 +154,7 @@ class SyntacticAnalyzer:
                     del(self.code[j + value])   
                     del(self.lexeme[j + value])   
                     del(self.lexeme[j + value])
+                    print("1. Se Eliminan unos cuantos - longitud" +  str(len(self.symbolTable)))
                 else:
                     value = self.lexeme[j : self.finalInstruction[0]].index("-")
                     self.symbolTable[j + value - 1] = [str(add(int(coincidence), -int(coincidence1))), 400]
@@ -151,10 +165,11 @@ class SyntacticAnalyzer:
                     del(self.code[j + value])   
                     del(self.code[j + value])   
                     del(self.lexeme[j + value])   
-                    del(self.lexeme[j + value])                    
-                return True
+                    del(self.lexeme[j + value])            
             else: 
                 return False
+            self.finalInstruction = self.fixPosition(self.finalInstruction, -2)
+        return True
 
     def setSymbolTable(self, i, j, code):
         try: 
@@ -167,4 +182,30 @@ class SyntacticAnalyzer:
             self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][1] = code
             self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][0] = self.memoryInt[self.lexeme[i : self.finalInstruction[0]][j]]
             self.lexeme[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)] = self.memoryInt[self.lexeme[i : self.finalInstruction[0]][j]] 
-        
+    
+    def functionShow(self):
+        print("Aqui va la funcion show")
+
+    def functionRepeat(self, i, start, final):
+        if(match(r"repeat\('[^']*'\,\d+\)", "".join(self.lexeme[start + i : final + (1 + i)])) != None):
+            stringRepeat = search(r"'[^']*'", "".join(self.lexeme[start + i : final + (1 + i)])).group()
+            valueRepeat = search(r"\d+", "".join(self.lexeme[start + i : final + (1 + i)])).group()
+            stringRepeat = stringRepeat[1 : len(stringRepeat) - 1] * int(valueRepeat)
+            self.symbolTable[i + start] = [stringRepeat, 400]
+            self.lexeme[i + start] = stringRepeat
+            self.code[start + i] = 400
+            del(self.symbolTable[start + i + 1 : final + 1 + i])
+            del(self.lexeme[start + 1 + i : final + 1 + i])
+            del(self.code[start + i + 1 : final + 1 + i])
+            
+        else: 
+            self.error = False
+            self.output += "Error:4\nError de sintaxis\n"
+
+    def functionConcat(self):
+        print("Aqui va la funcion concat")
+
+    def fixPosition(self, lista, position):
+        for i in range(0, len(lista)): 
+            lista[i] = lista[i] + position
+        return lista

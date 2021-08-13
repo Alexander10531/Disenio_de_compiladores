@@ -1,4 +1,4 @@
-int numero1 = 1323
+int numero1 = 2
 int numero = numero1
 str value = 'Alexander'
-numero - 1
+repeat('Alexander',2)
