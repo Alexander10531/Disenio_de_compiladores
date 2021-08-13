@@ -197,7 +197,7 @@ class SyntacticAnalyzer:
             del(self.symbolTable[start + i + 1 : final + 1 + i])
             del(self.lexeme[start + 1 + i : final + 1 + i])
             del(self.code[start + i + 1 : final + 1 + i])
-            
+            self.fixPosition(self.finalInstruction, ((i + final) - (start + i)))
         else: 
             self.error = False
             self.output += "Error:4\nError de sintaxis\n"
