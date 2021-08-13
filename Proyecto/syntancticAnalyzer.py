@@ -1,5 +1,4 @@
-from os import symlink
-from re import search, match
+from re import search, match, findall
 from operator import add, sub
 class SyntacticAnalyzer:
     
@@ -128,10 +127,14 @@ class SyntacticAnalyzer:
         lista.reverse()
         while True:
             if 500 in self.code[i : self.finalInstruction[0]]:
+                print(lista)
+                print(lista1)
                 start = (len(lista) - 1) - lista.index(500)
                 final = lista1.index(")")
                 self.functions[self.lexeme[i + start]](i, start, final)
-                break
+                lista = self.code[i : self.finalInstruction[0]]
+                lista1 = self.lexeme[i : self.finalInstruction[0]]
+                lista.reverse()
             else: 
                 break
 
@@ -191,8 +194,8 @@ class SyntacticAnalyzer:
             stringRepeat = search(r"'[^']*'", "".join(self.lexeme[start + i : final + (1 + i)])).group()
             valueRepeat = search(r"\d+", "".join(self.lexeme[start + i : final + (1 + i)])).group()
             stringRepeat = stringRepeat[1 : len(stringRepeat) - 1] * int(valueRepeat)
-            self.symbolTable[i + start] = [stringRepeat, 400]
-            self.lexeme[i + start] = stringRepeat
+            self.symbolTable[i + start] = ["'" + stringRepeat + "'", 400]
+            self.lexeme[i + start] = "'" + stringRepeat + "'"
             self.code[start + i] = 400
             del(self.symbolTable[start + i + 1 : final + 1 + i])
             del(self.lexeme[start + 1 + i : final + 1 + i])
@@ -202,10 +205,27 @@ class SyntacticAnalyzer:
             self.error = False
             self.output += "Error:4\nError de sintaxis\n"
 
-    def functionConcat(self):
-        print("Aqui va la funcion concat")
+    def functionConcat(self, i, start, final):
+        if(match(r"concat\((('[^']*'\,)+'[^']*')", "".join(self.lexeme[start + i : final + (1 + i)])) != None):
+            coincidences = self.replaceCharInList("'", findall(r"'[^']+'","".join(self.lexeme[start + i : final + (1 + i)])))
+            concatStr = "'" + "".join(coincidences) + "'"
+            self.symbolTable[i + start] = [concatStr, 400]
+            self.lexeme[i + start] = concatStr
+            self.code[start + i] = 400
+            del(self.symbolTable[start + i + 1 : final + 1 + i])
+            del(self.lexeme[start + 1 + i : final + 1 + i])
+            del(self.code[start + i + 1 : final + 1 + i])
+            self.fixPosition(self.finalInstruction, ((i + final) - (start + i)))
+        else:
+            self.error = False
+            self.output += "Error:4\nError de sintaxis\n"
 
     def fixPosition(self, lista, position):
         for i in range(0, len(lista)): 
             lista[i] = lista[i] + position
         return lista
+
+    def replaceCharInList(self, charR, wordList):
+        for i in range(0, len(wordList)):
+            wordList[i] = wordList[i].replace(charR, "")
+        return wordList

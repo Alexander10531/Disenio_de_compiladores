@@ -1,4 +1,4 @@
 int numero1 = 2
 int numero = numero1
 str value = 'Alexander'
-concat(repeat('Alexander',2))
+concat(repeat('Alexander',2),'Alexander','Tejeda')
