@@ -29,6 +29,7 @@ class LexicalAnalyzer:
                 sourceCode1 = self.assignEntry2SymbolTable(match(r"('[^']*'|\d+)\s*", sourceCode1), sourceCode1, 400)
             elif match(r"(repeat)|(show)|(concat)", sourceCode1) != None:
                 sourceCode1 = self.assignEntry2SymbolTable(match(r"(repeat)|(show)|(concat)", sourceCode1), sourceCode1, 500)
+                
         del(sourceCode1)
 
     def assignEntry2SymbolTable(self, lexeme, sourceCode, code):

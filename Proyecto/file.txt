@@ -1,5 +1,11 @@
 int numero = 3
+int numero1 = numero
+str var_1 = 'Alexander'
+show(numero+numero) 
 show(concat('Alexander','Ismael'))
 concat('Alexander', 'Ismael')
 show(concat('Alexander','Ismael'))
 show(repeat('Alexander', numero))
+show(repeat('Alexander', numero+numero))
+show(1)
+show(concat(var_1, '2'))
