@@ -1,5 +1,5 @@
-from re import search, match, findall
-from operator import add, sub
+from re import search, match, findall, sub
+from operator import add
 class SyntacticAnalyzer:
     
     def __init__(self, symbolTable): 
@@ -127,8 +127,6 @@ class SyntacticAnalyzer:
         lista.reverse()
         while True:
             if 500 in self.code[i : self.finalInstruction[0]]:
-                print(lista)
-                print(lista1)
                 start = (len(lista) - 1) - lista.index(500)
                 final = lista1.index(")")
                 self.functions[self.lexeme[i + start]](i, start, final)
@@ -157,7 +155,6 @@ class SyntacticAnalyzer:
                     del(self.code[j + value])   
                     del(self.lexeme[j + value])   
                     del(self.lexeme[j + value])
-                    print("1. Se Eliminan unos cuantos - longitud" +  str(len(self.symbolTable)))
                 else:
                     value = self.lexeme[j : self.finalInstruction[0]].index("-")
                     self.symbolTable[j + value - 1] = [str(add(int(coincidence), -int(coincidence1))), 400]
@@ -186,10 +183,24 @@ class SyntacticAnalyzer:
             self.symbolTable[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)][0] = self.memoryInt[self.lexeme[i : self.finalInstruction[0]][j]]
             self.lexeme[(self.finalInstruction[0] - len(self.code[i : self.finalInstruction[0]]) + j)] = self.memoryInt[self.lexeme[i : self.finalInstruction[0]][j]] 
     
-    def functionShow(self):
-        print("Aqui va la funcion show")
+    def functionShow(self, i, start, final):
+        if(match(r"show\(('[^']*'|\d+)\)", "".join(self.lexeme[start + i : final + (1 + i)])) != None):
+            value = search(r"('[^']*'|\d+)", "".join(self.lexeme[start + i : final + (1 + i)])).group()
+            value = sub(r"'","",value)
+            self.code[i + start] = 400
+            self.lexeme[i + start] = value
+            self.symbolTable[i + start] = [value, 400]
+            self.output += value + "\n"
+            del(self.code[start + i + 1 : final + i + 1])
+            del(self.lexeme[start + i + 1 : final + i + 1])
+            del(self.symbolTable[start + i + 1 : final + i + 1])
+            self.fixPosition(self.finalInstruction, -((i + final) - (start + i)))
+        else:
+            self.error = False
+            self.output += "Error:4\nError de sintaxis"
 
     def functionRepeat(self, i, start, final):
+        # print(self.lexeme[start + i : final + (1 + i)])
         if(match(r"repeat\('[^']*'\,\d+\)", "".join(self.lexeme[start + i : final + (1 + i)])) != None):
             stringRepeat = search(r"'[^']*'", "".join(self.lexeme[start + i : final + (1 + i)])).group()
             valueRepeat = search(r"\d+", "".join(self.lexeme[start + i : final + (1 + i)])).group()
@@ -200,7 +211,7 @@ class SyntacticAnalyzer:
             del(self.symbolTable[start + i + 1 : final + 1 + i])
             del(self.lexeme[start + 1 + i : final + 1 + i])
             del(self.code[start + i + 1 : final + 1 + i])
-            self.fixPosition(self.finalInstruction, ((i + final) - (start + i)))
+            self.fixPosition(self.finalInstruction, -((i + final) - (start + i)))
         else: 
             self.error = False
             self.output += "Error:4\nError de sintaxis\n"
@@ -215,7 +226,7 @@ class SyntacticAnalyzer:
             del(self.symbolTable[start + i + 1 : final + 1 + i])
             del(self.lexeme[start + 1 + i : final + 1 + i])
             del(self.code[start + i + 1 : final + 1 + i])
-            self.fixPosition(self.finalInstruction, ((i + final) - (start + i)))
+            self.fixPosition(self.finalInstruction, -((i + final) - (start + i)))
         else:
             self.error = False
             self.output += "Error:4\nError de sintaxis\n"
@@ -229,3 +240,8 @@ class SyntacticAnalyzer:
         for i in range(0, len(wordList)):
             wordList[i] = wordList[i].replace(charR, "")
         return wordList
+    
+    def findChar(self, i, char):
+        for j in range(i, len(self.lexeme)):
+            if self.lexeme[j] == char:
+                return j 

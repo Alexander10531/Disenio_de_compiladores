@@ -1,4 +1,5 @@
-int numero1 = 2
-int numero = numero1
-str value = 'Alexander'
-concat(repeat('Alexander',2),'Alexander','Tejeda')
+int numero = 3
+show(concat('Alexander','Ismael'))
+concat('Alexander', 'Ismael')
+show(concat('Alexander','Ismael'))
+show(repeat('Alexander', numero))
